@@ -13,4 +13,4 @@ fmt.Println(area)
 ```
 
 # License
-This source is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE. If this license is not acceptable for your project, let me know. Additionally, C# and C++ versions of this library exist under different licenses and can be licensed upon request.
+This source is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE. If this license is not acceptable for your project, let me know. Additionally, more feature-rich versions of this library exist, written in C# and C++, and can be licensed upon request.
