@@ -297,6 +297,7 @@ func (p *Parser) Parse() (mesh NavMesh, err error) {
 	}
 
 	// Ok we're done parsing the file, now it's time to connect the graph
+	mesh.connectGraph()
 
 	return mesh, nil
 }

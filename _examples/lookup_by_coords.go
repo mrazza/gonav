@@ -77,7 +77,7 @@ func main() {
 		elapsed = time.Since(start)
 
 		if area != nil {
-			fmt.Printf("Found in %d...\n", elapsed.Nanoseconds())
+			fmt.Printf("Found in %fus...\n", float64(elapsed.Nanoseconds())/10000.0)
 			fmt.Println(area)
 		} else {
 			fmt.Printf("No area found containing the specified coords in %v.\n", elapsed)
@@ -90,7 +90,7 @@ func main() {
 		elapsed = time.Since(start)
 
 		if area != nil {
-			fmt.Printf("Found in %d...\n", elapsed.Nanoseconds())
+			fmt.Printf("Found in %fus...\n", float64(elapsed.Nanoseconds())/10000.0)
 			fmt.Println(area)
 		} else {
 			fmt.Printf("No area found containing the specified coords in %v.\n", elapsed)
