@@ -1,5 +1,5 @@
 # gonav
-A [Source Engine](https://en.wikipedia.org/wiki/Source_(game_engine)) bot Nav file parser written in Go. For more information on Source's Navigation Meshes see Valve's wiki: https://developer.valvesoftware.com/wiki/Navigation_Meshes
+A [Source Engine](https://en.wikipedia.org/wiki/Source_(game_engine)) bot Nav file parser written in Go. The specifics of the .nav format were reverse engineered using the information on [Valve's wiki](https://developer.valvesoftware.com/wiki/NAV) as a starting point. For more information on Source's Navigation Meshes see Valve's wiki: https://developer.valvesoftware.com/wiki/Navigation_Meshes
 
 # Usage
 See the `_examples` folder for examples of how to use this library. The basics, however, are pretty straightforward. Create a parser and pass in any `Reader` that contains the binary .nav data, then call the `Parse()` method. This will output a parsed `NavMesh` object which you can perform operations on. Here's a terse example:
