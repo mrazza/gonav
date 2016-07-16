@@ -112,7 +112,7 @@ func (area *NavArea) GetCenter() Vector3 {
 // GetZ gets the Z-coord for the specified point within this area.
 // An error is returned if the requested point is not within this area.
 func (area *NavArea) GetZ(x, y float32) (float32, error) {
-	if !area.ContainsPoint(Vector3{x, y, 0}) {
+	if !area.ContainsPoint(Vector3{x, y, 0}, true) {
 		return 0, errors.New("Cannot get Z. Specified point does not exist within the area.")
 	}
 
@@ -134,11 +134,23 @@ func (area *NavArea) GetZ(x, y float32) (float32, error) {
 }
 
 // ContainsPoint determines whether or not the specified point is contained within this area
-func (area *NavArea) ContainsPoint(point Vector3) bool {
+// If allowBelow is false, a rough estimation will be performed and if the specified point is
+// below this NavArea, we will return false.
+func (area *NavArea) ContainsPoint(point Vector3, allowBelow bool) bool {
+	if !allowBelow && area.NorthWest.Z > point.Z && area.SouthEast.Z > point.Z {
+		return false
+	}
+
 	return area.NorthWest.X <= point.X &&
 		area.NorthWest.Y <= point.Y &&
 		area.SouthEast.X >= point.X &&
 		area.SouthEast.Y >= point.Y
+}
+
+// DistanceFromZ gets the distance the specified point is from a rough estimate of the Z-position
+// for this NavArea
+func (area *NavArea) DistanceFromZ(point Vector3) float32 {
+	return point.Z - ((area.NorthWest.Z + area.SouthEast.Z) / 2.0)
 }
 
 // GetRoughSquaredArea gets a rough estimate of the squared area of the NavArea
@@ -148,7 +160,7 @@ func (area *NavArea) GetRoughSquaredArea() float32 {
 
 // GetClosestPointInArea gets the point closest to the specified point that is contained within this Area.
 func (area *NavArea) GetClosestPointInArea(point Vector3) Vector3 {
-	if area.ContainsPoint(point) {
+	if area.ContainsPoint(point, true) {
 		z, _ := area.GetZ(point.X, point.Y)
 		return Vector3{point.X, point.Y, z}
 	}

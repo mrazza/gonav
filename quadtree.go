@@ -19,7 +19,10 @@
 // Package gonav provides functionality related to CS:GO Nav Meshes
 package gonav
 
-import "errors"
+import (
+	"errors"
+	"math"
+)
 
 const preferredNodeCapacity int = 4
 
@@ -66,30 +69,45 @@ func (node *quadTreeNode) InsertArea(area *NavArea) (*quadTreeNode, error) {
 
 // Finds the area that contains the specified point; nil if the area could not be found
 // The Z-value is used to find the closest area that contains the X and Y values
-func (node *quadTreeNode) FindAreaByPoint(point Vector3) *NavArea {
+// If allowBelow is true the area closest by Z that contains this point is returned
+// If allowBelow is false the area closest by Z that is BELOW this point is returned
+// Think of allowBelow as "allow the specified point to be below a nav area"
+func (node *quadTreeNode) FindAreaByPoint(point Vector3, allowBelow bool) *NavArea {
 	if !node.containsPoint(point) {
 		return nil
 	}
 
+	var bestArea *NavArea
+	bestDistance := float32(math.MaxFloat32)
+
+	var updateBestArea = func(currArea *NavArea) {
+		currDistance := currArea.DistanceFromZ(point)
+
+		if currDistance < bestDistance {
+			bestArea = currArea
+			bestDistance = currDistance
+		}
+	}
+
 	for _, currArea := range node.Areas {
-		if currArea.ContainsPoint(point) {
-			return currArea
+		if currArea.ContainsPoint(point, allowBelow) {
+			updateBestArea(currArea)
 		}
 	}
 
 	if node.isSubDivided() {
-		if currArea := node.NorthWest.FindAreaByPoint(point); currArea != nil {
-			return currArea
-		} else if currArea := node.NorthEast.FindAreaByPoint(point); currArea != nil {
-			return currArea
-		} else if currArea := node.SouthWest.FindAreaByPoint(point); currArea != nil {
-			return currArea
-		} else if currArea := node.SouthEast.FindAreaByPoint(point); currArea != nil {
-			return currArea
+		if currArea := node.NorthWest.FindAreaByPoint(point, allowBelow); currArea != nil {
+			updateBestArea(currArea)
+		} else if currArea := node.NorthEast.FindAreaByPoint(point, allowBelow); currArea != nil {
+			updateBestArea(currArea)
+		} else if currArea := node.SouthWest.FindAreaByPoint(point, allowBelow); currArea != nil {
+			updateBestArea(currArea)
+		} else if currArea := node.SouthEast.FindAreaByPoint(point, allowBelow); currArea != nil {
+			updateBestArea(currArea)
 		}
 	}
 
-	return nil
+	return bestArea
 }
 
 // containsPoint determines whether or not the specified point is contained in the node

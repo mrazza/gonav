@@ -65,28 +65,9 @@ func main() {
 		point := gonav.Vector3{X: x, Y: y, Z: z}
 
 		fmt.Println()
-		fmt.Println("Looking up via the slice...")
-		var area *gonav.NavArea
-		start = time.Now()
-		for _, currArea := range mesh.Areas {
-			if currArea.ContainsPoint(point) {
-				area = currArea
-				break
-			}
-		}
-		elapsed = time.Since(start)
-
-		if area != nil {
-			fmt.Printf("Found in %fus...\n", float64(elapsed.Nanoseconds())/10000.0)
-			fmt.Println(area)
-		} else {
-			fmt.Printf("No area found containing the specified coords in %v.\n", elapsed)
-		}
-
-		fmt.Println()
 		fmt.Println("Looking up via the quadtree...")
 		start = time.Now()
-		area = mesh.QuadTreeAreas.FindAreaByPoint(point)
+		area := mesh.QuadTreeAreas.FindAreaByPoint(point, false)
 		elapsed = time.Since(start)
 
 		if area != nil {
