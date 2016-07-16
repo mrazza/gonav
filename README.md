@@ -8,7 +8,7 @@ See the `_examples` folder for examples of how to use this library. The basics, 
 f, _ := os.Open("de_dust2.nav") // Open the file
 parser := gonav.Parser{Reader: f}
 mesh, _ := parser.Parse() // Parse the file
-area := mesh.QuadTreeAreas.FindAreaByPoint(gonav.Vector3{10, 10, 10}) // Find the nav area that contains the world point {10, 10, 10}
+area := mesh.QuadTreeAreas.FindAreaByPoint(gonav.Vector3{10, 10, 10}, true) // Find the nav area that contains the world point {10, 10} with a Z-value closest to 10
 fmt.Println(area)
 ```
 
