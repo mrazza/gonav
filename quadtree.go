@@ -77,11 +77,13 @@ func (node *quadTreeNode) FindAreaByPoint(point Vector3, allowBelow bool) *NavAr
 		return nil
 	}
 
+	// We'll use these to keep track of the current known best area
 	var bestArea *NavArea
 	bestDistance := float32(math.MaxFloat32)
 
-	var updateBestArea = func(currArea *NavArea) {
-		currDistance := currArea.DistanceFromZ(point)
+	// This lambda will update our currently known best area
+	updateBestArea := func(currArea *NavArea) {
+		currDistance := float32(math.Abs(float64(currArea.DistanceFromZ(point))))
 
 		if currDistance < bestDistance {
 			bestArea = currArea
@@ -89,12 +91,14 @@ func (node *quadTreeNode) FindAreaByPoint(point Vector3, allowBelow bool) *NavAr
 		}
 	}
 
+	// Let's loop through everything in this node
 	for _, currArea := range node.Areas {
 		if currArea.ContainsPoint(point, allowBelow) {
 			updateBestArea(currArea)
 		}
 	}
 
+	// If we're subdivided we need to recurse
 	if node.isSubDivided() {
 		if currArea := node.NorthWest.FindAreaByPoint(point, allowBelow); currArea != nil {
 			updateBestArea(currArea)
