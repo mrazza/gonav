@@ -153,6 +153,13 @@ func (area *NavArea) DistanceFromZ(point Vector3) float32 {
 	return point.Z - ((area.NorthWest.Z + area.SouthEast.Z) / 2.0)
 }
 
+// DistanceFromCenter gets the distance from the specified point to the center of this area
+func (area *NavArea) DistanceFromCenter(point Vector3) float32 {
+	center := area.GetCenter()
+	center.Sub(point)
+	return center.Length()
+}
+
 // GetRoughSquaredArea gets a rough estimate of the squared area of the NavArea
 func (area *NavArea) GetRoughSquaredArea() float32 {
 	return (area.SouthEast.X - area.NorthWest.X) * (area.SouthEast.Y - area.NorthWest.Y)

@@ -19,9 +19,32 @@
 // Package gonav provides functionality related to CS:GO Nav Meshes
 package gonav
 
+import "errors"
+
 // NavPlace represents a Place entry in the NavMesh
 type NavPlace struct {
 	ID    uint32     // ID of the place
 	Name  string     // The name of the place
 	Areas []*NavArea // Collection of areas in this place
+}
+
+// GetEstimatedCenter gets a rough estimate of the center of this NavPlace
+func (np *NavPlace) GetEstimatedCenter() (Vector3, error) {
+	accume := Vector3{0, 0, 0}
+	weight := float32(0)
+
+	for _, currArea := range np.Areas {
+		area := currArea.GetRoughSquaredArea()
+		center := currArea.GetCenter()
+		center.Mul(area)
+		accume.Add(center)
+		weight += area
+	}
+
+	if weight == 0 {
+		return Vector3{}, errors.New("Cannot estimate center for NavAreas with no area.")
+	}
+
+	accume.Div(weight)
+	return accume, nil
 }

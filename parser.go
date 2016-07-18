@@ -291,7 +291,7 @@ func (p *Parser) Parse() (mesh NavMesh, err error) {
 		currLadder.TopBehindArea = mesh.Areas[currLadder.TopBehindAreaID]
 
 		p.read(&currLadder.BottomAreaID)
-		currLadder.BottomArea = mesh.Areas[currLadder.TopBehindAreaID]
+		currLadder.BottomArea = mesh.Areas[currLadder.BottomAreaID]
 
 		mesh.Ladders[currLadder.ID] = &currLadder
 	}

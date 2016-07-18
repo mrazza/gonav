@@ -19,7 +19,10 @@
 // Package gonav provides functionality related to CS:GO Nav Meshes
 package gonav
 
-import "sync"
+import (
+	"math"
+	"sync"
+)
 
 // NavMesh represents an entire parsed Nav Mesh and provides functionality
 // related to the manipulation and searching of the mesh
@@ -48,4 +51,46 @@ func (mesh *NavMesh) connectGraph() {
 	}
 
 	wg.Wait()
+}
+
+// GetPlaceByName gets a NavPlace by the specified name string; nil if not found
+func (mesh *NavMesh) GetPlaceByName(name string) *NavPlace {
+	for _, curr := range mesh.Places {
+		if curr.Name == name {
+			return curr
+		}
+	}
+
+	return nil
+}
+
+// Finds the area nearest to this point
+func (mesh *NavMesh) GetNearestArea(point Vector3, allowBelow bool) *NavArea {
+	bestDistance := float32(math.MaxFloat32)
+	var bestArea *NavArea
+
+	for _, curr := range mesh.Areas {
+		if curr.ContainsPoint(point, allowBelow) {
+			currDistance := curr.DistanceFromZ(point)
+			if bestDistance > currDistance {
+				bestDistance = currDistance
+				bestArea = curr
+			}
+		} else {
+			center := curr.GetCenter()
+
+			if !allowBelow && center.Z > point.Z {
+				continue
+			}
+
+			center.Sub(point)
+			currDistance := center.LengthSquared()
+			if bestDistance > currDistance {
+				bestDistance = currDistance
+				bestArea = curr
+			}
+		}
+	}
+
+	return bestArea
 }

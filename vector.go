@@ -46,29 +46,29 @@ func (v *Vector3) Normalize() {
 }
 
 // Add adds the specified Vector to this one.
-func (v *Vector3) Add(left Vector3) {
-	v.X += left.X
-	v.Y += left.Y
-	v.Z += left.Z
+func (v *Vector3) Add(right Vector3) {
+	v.X += right.X
+	v.Y += right.Y
+	v.Z += right.Z
 }
 
 // Sub subtracts the specified Vector from this one.
-func (v *Vector3) Sub(left Vector3) {
-	v.X -= left.X
-	v.Y -= left.Y
-	v.Z -= left.Z
+func (v *Vector3) Sub(right Vector3) {
+	v.X -= right.X
+	v.Y -= right.Y
+	v.Z -= right.Z
 }
 
 // Mul multiplies the specified scalar to this vector.
-func (v *Vector3) Mul(left float32) {
-	v.X *= left
-	v.Y *= left
-	v.Z *= left
+func (v *Vector3) Mul(right float32) {
+	v.X *= right
+	v.Y *= right
+	v.Z *= right
 }
 
 // Div divides this vector by the specified scalar.
-func (v *Vector3) Div(left float32) {
-	v.X /= left
-	v.Y /= left
-	v.Z /= left
+func (v *Vector3) Div(right float32) {
+	v.X /= right
+	v.Y /= right
+	v.Z /= right
 }
