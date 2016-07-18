@@ -67,6 +67,7 @@ func newPath(endNode *PathNode) Path {
 
 // SimpleBuildShortestPath builds a path (via PathFinding A*) and returns a Path object containing the start and end nodes of the path
 // startArea and endArea are the starting and ending NavAreas for the path
+// This function uses simple default cost and heuristic functions when building the Path. For more control, see BuildShortestPath
 func SimpleBuildShortestPath(startArea, endArea *NavArea) (Path, error) {
 	return BuildShortestPath(
 		startArea,
