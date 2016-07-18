@@ -16,10 +16,17 @@ fmt.Println(area)
 This library also supports path finding across nav meshes via an A* implementation.
 
 ```
+bombsiteA := mesh.GetPlaceByName("BombsiteA")
+aCenter, _ := bombsiteA.GetEstimatedCenter()
+aArea := mesh.GetNearestArea(aCenter, false)
+bombsiteB := mesh.GetPlaceByName("BombsiteB")
+bCenter, _ := bombsiteB.GetEstimatedCenter()
+bArea := mesh.GetNearestArea(bCenter, false)
 path, _ := gonav.SimpleBuildShortestPath(aArea, bArea)
 
 for _, currNode := range path.Nodes {
 	fmt.Println(currNode.Area)
+}
 ```
 
 Example output of path finding from the center of A-site on de_nuke to the center of B-site:
