@@ -29,8 +29,7 @@ import (
 func main() {
 	fmt.Print("Enter file name (ex: de_dust2.nav): ")
 	var file string
-	//fmt.Scanf("%s\n", &file)
-	file = "C:/Users/Matthew/Source/Go/bin/de_nuke.nav"
+	fmt.Scanf("%s\n", &file)
 	f, ok := os.Open(file) // Open the file
 
 	if ok != nil {
