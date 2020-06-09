@@ -190,7 +190,7 @@ func (p *Parser) Parse() (mesh NavMesh, err error) {
 
 			for spotIndex := byte(0); spotIndex < spotCount; spotIndex++ {
 				var currSpot NavEncounterSpot
-				p.read(currSpot.OrderID)
+				p.read(&currSpot.OrderID)
 				var distance byte
 				p.read(&distance)
 				currSpot.ParametricDistiance = float32(distance) / 255
